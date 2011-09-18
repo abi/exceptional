@@ -11,20 +11,20 @@ The output is colored too. I'll embed an image here sometime but here's what it 
 ```
 ReferenceError: nonexistentFunc is not defined
 /Users/abi/stuff/repos/node/exceptional/examples/example.js
-	2: (function() {
-	3:   var a;
-	4:   require('../lib/exceptional');
-	5:  >a = 5;
-	6:   nonexistentFunc();
-	7:   a();
-	8: }).call(this);
+	1: (function() {
+	2:   var a;
+	3:   require('../lib/exceptional');
+	4:   a = 5;
+	5:  >nonexistentFunc();
+	6:   a();
+	7: }).call(this);
 /Users/abi/stuff/repos/node/exceptional/examples/example.js
-	3:   var a;
-	4:   require('../lib/exceptional');
-	5:   a = 5;
-	6:   nonexistentFunc();
-	7:   >();
-	8: }).call(this);
+	2:   var a;
+	3:   require('../lib/exceptional');
+	4:   a = 5;
+	5:   nonexistentFunc();
+	6:   a();
+	7: })>call(this);
 Module._compile (module.js:402:26)
 Object..js (module.js:408:10)
 Module.load (module.js:334:31)
