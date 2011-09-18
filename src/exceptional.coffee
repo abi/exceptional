@@ -97,3 +97,5 @@ extractRelevantLines = (name, lineno, char) ->
         else
             log '\t' + cur_lineno + ": " + l
         cur_lineno += 1
+        
+exports.error = error
