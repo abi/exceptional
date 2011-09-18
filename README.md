@@ -59,4 +59,3 @@ TODO
 * Handle other kinds of special errors like we're handling AssertionError right now
 * Figure out how muliple imports/requires will be handled
 * Write some tests
-* 

@@ -89,7 +89,6 @@ extractRelevantLines = (name, lineno, char) ->
     cur_lineno = startLine
     
     for l in relevantLines
-        cur_lineno += 1
         if cur_lineno is lineno
             # - 2 because string indexes start at 0 but the error message's string index starts at 1
             # and we want '>' to appear one before the the actual error.
@@ -97,3 +96,4 @@ extractRelevantLines = (name, lineno, char) ->
             log red('\t' + cur_lineno + ": " + l)
         else
             log '\t' + cur_lineno + ": " + l
+        cur_lineno += 1
