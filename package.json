@@ -1,0 +1,37 @@
+{
+  "name": "exceptional",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+      
+  ],
+  "author": "Abi Raja <abii@stanford.edu> (http://abi.sh)",
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "scripts": {
+    "prepublish": "coffee -o lib/ -c ./src/exceptional.coffee",
+    "test": "coffee -c examples/example.coffee && node examples/example.js"
+  },
+  "dependencies": {
+      "node_util" : "0.x",
+      "termspeak" : "0.x"
+  },
+  "main": "./lib/exceptional.js",
+  "engines": {
+    "node": ">=0.4.x"
+  },
+  "directories": {
+    "example": "./examples",
+    "lib": "./src"
+  },
+  "devDependencies": {
+    "coffee-script": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/abi/exceptional.git"
+  }
+}
