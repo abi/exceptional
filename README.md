@@ -60,3 +60,5 @@ TODO
 * Handle other kinds of special errors like we're handling AssertionError right now
 * Figure out how muliple imports/requires will be handled
 * Make sure it works correctly with bugs in imported modules
+* Write a node/coffee runner wrapper that injects "require 'exceptional'" into modules so that I don't have to include
+exceptional as a dependency for every module
