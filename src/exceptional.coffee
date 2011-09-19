@@ -1,7 +1,7 @@
 path            = require 'path'
 util            = require 'util'
-{read}                                  = require('node_util').sync()
-{red, blue, pyellow, magenta}           = require 'termspeak'
+{read}          = require('node_util').sync()
+{red, pred, blue, pyellow, magenta}           = require 'termspeak'
 
 _               = require 'underscore'
 _.mixin require 'underscore.string'
@@ -11,20 +11,15 @@ _.mixin require 'underscore.string'
 
 {log, dir}    = console
 exists  = path.existsSync
-            
-# Setup
-# -----
 
 process.on 'uncaughtException', (err) ->
     error err
     process.exit -1
 
-# Module
-# -------
-
 error = (err) ->
 
     # TODO: Add colors
+    # TODO: Use eyes.js
     if err.name? is 'AssertionError'
         log "Actual: #{util.inspect err.actual}"
         log "Expected: #{util.inspect err.expected}"
@@ -32,29 +27,26 @@ error = (err) ->
                 
     try
         for line in err.stack.split '\n'
-            
             line = line.toString()
-            
-            # First line of the error message
-            if line.split('(').length < 2 and line.split('/').length > 1
-                temp = line.split('/')
-                temp.shift()
-                temp = '/' + temp.join('/')
-                [name, lineno, char] = temp.split(':')
-                extractRelevantLines name, lineno, char
+                        
+            # Stack traces include lines with the error message (usually the first line) but we distinguish the
+            # message from the trace based on the fact that every line in the trace starts with 'at'
+            if _(_(line).strip()).startsWith('at')
                 
-            # Line doesn't contain a path
-            if line.split('(').length < 2
-                log red(line)
-                continue
-            
-            [name, lineno, char] = line.split('(')[1].split(')')[0].split(':')
-            
-            # Only user or library files (not core node.js files have absolute paths)
-            if name.split('/').length > 1
-                extractRelevantLines name, lineno, char
+                # A trace line something like:
+                # 1. ' at Object.<anonymous> (/Users/abi/stuff/repos/node/exceptional/lib/exceptional.js:34:11)'
+                # 2. 'at /Users/abi/stuff/repos/node/toast/lib/toast.js:143:14'
+                results = line.match /at [^\(\/]*[\(]{0,1}(\/[^\:]*)\:(\d*)\:(\d*)/
+                
+                if results
+                    [$, file, lineno, char, $] = results
+                    printRelevantLines file, lineno, char
+                else
+                    # Core modules are not printed with beginning '/' and we don't want to print surrounding lines
+                    # for code modules.
+                    pyellow line
             else
-                pyellow line.split('at ')[1]
+                pred line
                 
     catch e
         log 'EXCEPTION IN EXCEPTIONAL. THE WORLD IS GOING TO EXPLODE.'
@@ -62,13 +54,13 @@ error = (err) ->
         log e.stack
         
 
-extractRelevantLines = (name, lineno, char) ->
-    name = name.replace '.coffee', '.js'
+printRelevantLines = (name, lineno, char) ->
     pyellow name
 
     lineno = parseInt lineno
     char   = parseInt char
 
+    # TODO: If the file can't be opened, then just print the original line (eph)
     file = read(path.resolve(name)).toString()
     lines = file.split('\n')
     totalLines = lines.length
@@ -90,6 +82,7 @@ extractRelevantLines = (name, lineno, char) ->
     
     for l in relevantLines
         if cur_lineno is lineno
+            
             # - 2 because string indexes start at 0 but the error message's string index starts at 1
             # and we want '>' to appear one before the the actual error.
             l = _(l).splice(char - 2, 1, '>')            

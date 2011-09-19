@@ -54,10 +54,9 @@ This is what I do currently.
 TODO
 ====
 
-* Re-write all code (it's really ugly right now)
 * Figure out a better color scheme
-* Handle other kinds of special errors like we're handling AssertionError right now
-* Figure out how muliple imports/requires will be handled
 * Write some tests
 * Relative paths
+* Handle other kinds of special errors like we're handling AssertionError right now
+* Figure out how muliple imports/requires will be handled
 * Make sure it works correctly with bugs in imported modules
